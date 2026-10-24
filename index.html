@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromptForge Hub — AI Prompt Generation Suite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace']
+                    },
+                    boxShadow: {
+                        'glow-primary': '0 0 25px -5px var(--color-glow)',
+                        'glow-card': '0 8px 32px 0 var(--color-card-shadow)'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <style>
+        /* CSS Theme Custom Variables */
+        :root[data-theme="midnight"] {
+            --bg-base: #060911;
+            --bg-surface: rgba(13, 19, 33, 0.75);
+            --bg-surface-elevated: #0f172a;
+            --bg-input: rgba(6, 10, 20, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(56, 189, 248, 0.35);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-heading: #ffffff;
+            --accent-primary: #06b6d4;
+            --accent-secondary: #8b5cf6;
+            --color-glow: rgba(6, 182, 212, 0.35);
+            --color-card-shadow: rgba(0, 0, 0, 0.6);
+            --badge-bg: rgba(6, 182, 212, 0.12);
+            --gradient-hero: radial-gradient(at 15% 15%, rgba(139, 92, 246, 0.22) 0, transparent 50%),
+                               radial-gradient(at 85% 10%, rgba(6, 182, 212, 0.2) 0, transparent 50%),
+                               radial-gradient(at 50% 85%, rgba(217, 70, 239, 0.15) 0, transparent 55%);
+        }
+
+        :root[data-theme="light"] {
+            --bg-base: #f8fafc;
+            --bg-surface: rgba(255, 255, 255, 0.88);
+            --bg-surface-elevated: #ffffff;
+            --bg-input: #f1f5f9;
+            --border-color: rgba(15, 23, 42, 0.08);
+            --border-hover: rgba(14, 165, 233, 0.5);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-heading: #0f172a;
+            --accent-primary: #0284c7;
+            --accent-secondary: #6366f1;
+            --color-glow: rgba(2, 132, 199, 0.2);
+            --color-card-shadow: rgba(0, 0, 0, 0.06);
+            --badge-bg: rgba(2, 132, 199, 0.08);
+            --gradient-hero: radial-gradient(at 15% 15%, rgba(99, 102, 241, 0.12) 0, transparent 50%),
+                               radial-gradient(at 85% 10%, rgba(2, 132, 199, 0.14) 0, transparent 50%),
+                               radial-gradient(at 50% 85%, rgba(14, 165, 233, 0.08) 0, transparent 55%);
+        }
+
+        :root[data-theme="synthwave"] {
+            --bg-base: #13091f;
+            --bg-surface: rgba(27, 14, 46, 0.78);
+            --bg-surface-elevated: #24113e;
+            --bg-input: rgba(15, 7, 26, 0.9);
+            --border-color: rgba(236, 72, 153, 0.18);
+            --border-hover: rgba(244, 63, 94, 0.45);
+            --text-main: #fce7f3;
+            --text-muted: #c084fc;
+            --text-heading: #ffffff;
+            --accent-primary: #f43f5e;
+            --accent-secondary: #a855f7;
+            --color-glow: rgba(244, 63, 94, 0.4);
+            --color-card-shadow: rgba(30, 10, 50, 0.7);
+            --badge-bg: rgba(244, 63, 94, 0.14);
+            --gradient-hero: radial-gradient(at 10% 20%, rgba(244, 63, 94, 0.25) 0, transparent 50%),
+                               radial-gradient(at 90% 15%, rgba(168, 85, 247, 0.25) 0, transparent 50%),
+                               radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.2) 0, transparent 50%);
+        }
+
+        :root[data-theme="emerald"] {
+            --bg-base: #041410;
+            --bg-surface: rgba(7, 29, 23, 0.75);
+            --bg-surface-elevated: #0a3328;
+            --bg-input: rgba(3, 18, 14, 0.9);
+            --border-color: rgba(52, 211, 153, 0.15);
+            --border-hover: rgba(16, 185, 129, 0.45);
+            --text-main: #ecfdf5;
+            --text-muted: #6ee7b7;
+            --text-heading: #ffffff;
+            --accent-primary: #10b981;
+            --accent-secondary: #06b6d4;
+            --color-glow: rgba(16, 185, 129, 0.35);
+            --color-card-shadow: rgba(0, 20, 15, 0.7);
+            --badge-bg: rgba(16, 185, 129, 0.12);
+            --gradient-hero: radial-gradient(at 10% 20%, rgba(16, 185, 129, 0.25) 0, transparent 50%),
+                               radial-gradient(at 90% 15%, rgba(6, 182, 212, 0.2) 0, transparent 50%),
+                               radial-gradient(at 50% 80%, rgba(52, 211, 153, 0.15) 0, transparent 50%);
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+        }
+
+        .glass-panel {
+            background: var(--bg-surface);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--color-card-shadow);
+        }
+        .glass-panel:hover {
+            border-color: var(--border-hover);
+        }
+
+        .hero-background {
+            background-image: var(--gradient-hero);
+        }
+
+        .grid-matrix {
+            background-size: 36px 36px;
+            background-image: 
+                linear-gradient(to right, rgba(125, 125, 125, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(125, 125, 125, 0.05) 1px, transparent 1px);
+        }
+
+        /* Modal transitions */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.96) translateY(12px);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative antialiased">
+
+    <!-- Toast Notification Box -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 glass-panel px-5 py-3 rounded-2xl shadow-2xl">
+        <i id="toastIcon" class="ph-bold ph-check-circle text-emerald-400 text-xl"></i>
+        <span id="toastMsg" class="text-xs sm:text-sm font-semibold tracking-wide">Notification message</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 w-full backdrop-blur-xl border-b border-[var(--border-color)] bg-[var(--bg-base)]/80 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between py-3">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 via-violet-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-white">
+                    <i class="ph-bold ph-sparkle text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-extrabold tracking-tight text-[var(--text-heading)]">PromptForge</span>
+                    <span class="text-xs ml-2 px-2 py-0.5 rounded-full bg-[var(--badge-bg)] text-[var(--accent-primary)] font-mono font-semibold border border-[var(--border-color)]">Suite 4.0</span>
+                </div>
+            </div>
+
+            <!-- Central Nav Links -->
+            <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-[var(--text-muted)]">
+                <a href="#quad-suite" class="hover:text-[var(--text-heading)] transition-colors">The 4 Apps</a>
+                <a href="#synergy-mixer" class="hover:text-[var(--text-heading)] transition-colors">Synergy Mixer</a>
+                <a href="#creator-responsibility" class="hover:text-[var(--text-heading)] transition-colors">Creator Notice</a>
+                <a href="#disclaimer" class="hover:text-[var(--text-heading)] transition-colors">Disclaimer</a>
+            </nav>
+
+            <!-- Right Controls: Theme Switcher & Actions -->
+            <div class="flex items-center gap-3">
+                <!-- Theme Switcher Dropdown -->
+                <div class="relative inline-block text-left" id="theme-selector-container">
+                    <button onclick="toggleThemeMenu()" id="themeBtn" aria-label="Change Theme" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold glass-panel text-[var(--text-main)] hover:border-[var(--border-hover)] transition">
+                        <i class="ph-bold ph-paint-brush-broad text-[var(--accent-primary)] text-base"></i>
+                        <span id="currentThemeLabel" class="hidden sm:inline">Midnight</span>
+                        <i class="ph-bold ph-caret-down text-xs opacity-70"></i>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div id="themeMenu" class="hidden absolute right-0 mt-2 w-48 rounded-2xl glass-panel p-2 shadow-2xl z-50 border border-[var(--border-color)] bg-[var(--bg-surface-elevated)]">
+                        <button onclick="setTheme('midnight', 'Midnight')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-800/40 flex items-center gap-2.5 transition text-slate-200">
+                            <span class="w-3 h-3 rounded-full bg-cyan-400"></span> Midnight Neon
+                        </button>
+                        <button onclick="setTheme('light', 'Clean Light')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-200/50 flex items-center gap-2.5 transition text-slate-800">
+                            <span class="w-3 h-3 rounded-full bg-sky-500"></span> Clean Light
+                        </button>
+                        <button onclick="setTheme('synthwave', 'Synthwave')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold hover:bg-fuchsia-950/40 flex items-center gap-2.5 transition text-pink-200">
+                            <span class="w-3 h-3 rounded-full bg-pink-500"></span> Sunset Synthwave
+                        </button>
+                        <button onclick="setTheme('emerald', 'Emerald')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold hover:bg-emerald-950/40 flex items-center gap-2.5 transition text-emerald-200">
+                            <span class="w-3 h-3 rounded-full bg-emerald-400"></span> Deep Emerald
+                        </button>
+                    </div>
+                </div>
+
+                <a href="#synergy-mixer" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-xs font-semibold hover:border-[var(--border-hover)] transition">
+                    <i class="ph-bold ph-magic-wand text-amber-400"></i> Mix Prompt
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Showcase Section -->
+    <main class="flex-grow">
+        <section class="hero-background grid-matrix pt-16 pb-20 sm:pt-24 sm:pb-28 border-b border-[var(--border-color)] relative overflow-hidden">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-xs font-mono font-semibold text-[var(--accent-primary)] mb-6 shadow-sm">
+                    <i class="ph-fill ph-circles-four text-base"></i>
+                    <span>The Four Specialized AI Prompt Engines</span>
+                </div>
+
+                <!-- Main Heading -->
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[var(--text-heading)] mb-6">
+                    A Unified Collection for <br class="hidden sm:inline">
+                    <span class="bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Creative AI Visionaries</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="max-w-3xl mx-auto text-sm sm:text-lg text-[var(--text-muted)] leading-relaxed mb-10">
+                    Why settle for vague generic prompts? We have bundled four dedicated, specialized generators into one launchpad to grant you granular creative mastery over every dimension of your generative output:
+                    <strong class="text-[var(--text-heading)]">Concepts</strong>, 
+                    <strong class="text-[var(--text-heading)]">Characters</strong>, 
+                    <strong class="text-[var(--text-heading)]">Scenery</strong>, and 
+                    <strong class="text-[var(--text-heading)]">Architecture</strong>.
+                </p>
+
+                <!-- Action Links -->
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <a href="#quad-suite" class="px-6 py-3.5 rounded-2xl bg-[var(--text-heading)] text-[var(--bg-base)] font-bold text-xs sm:text-sm shadow-xl hover:opacity-90 transition transform active:scale-95 flex items-center gap-2">
+                        <i class="ph-bold ph-cards"></i> Explore the 4 Apps
+                    </a>
+                    <a href="#synergy-mixer" class="px-6 py-3.5 rounded-2xl glass-panel text-[var(--text-heading)] font-semibold text-xs sm:text-sm hover:border-[var(--border-hover)] transition flex items-center gap-2">
+                        <i class="ph-bold ph-flask text-[var(--accent-primary)]"></i> Try Synergy Combinator
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- The 4 Apps Quad-Showcase Grid -->
+        <section id="quad-suite" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <span class="text-xs font-mono uppercase tracking-widest text-[var(--accent-primary)] font-bold px-3 py-1 rounded-full bg-[var(--badge-bg)] border border-[var(--border-color)]">Side-By-Side Architecture</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--text-heading)] mt-3 mb-3">Explore the 4 Web Applications</h2>
+                <p class="text-[var(--text-muted)] max-w-2xl mx-auto text-sm">
+                    Open each app directly in a new tab, or preview its full live interface inside this page using the interactive modal previewer.
+                </p>
+            </div>
+
+            <!-- 4 Cards Side-by-Side (Responsive 2x2 Grid) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- 1. conceptpromptgen.app -->
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-cyan-500 transition-all duration-300 hover:shadow-glow-primary">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl">
+                                    <i class="ph-bold ph-lightbulb"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-mono uppercase tracking-wider text-cyan-400 font-bold">Ideation & Abstract</span>
+                                    <h3 class="text-xl font-bold text-[var(--text-heading)]">Concept Prompt Gen</h3>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">conceptpromptgen.app</span>
+                        </div>
+
+                        <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-5">
+                            Formulates novel overarching world-premises, surreal allegories, speculative sci-fi paradoxes, and poetic starting seeds that unlock fresh storylines using a sketch-pad visual drawing board without creative fatigue.
+                        </p>
+
+                        <!-- Highlights -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]"><i class="ph-fill ph-sparkle text-cyan-400 mr-1"></i>Abstract Motifs</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]">Paradox Seeds</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]">Metaphor Synthesis</span>
+                        </div>
+
+                        <!-- Sample Snippet Box -->
+                        <div class="bg-[var(--bg-input)] border border-[var(--border-color)] rounded-2xl p-4 mb-6 font-mono text-xs">
+                            <div class="flex items-center justify-between text-[11px] text-[var(--text-muted)] mb-2 font-sans font-semibold">
+                                <span class="uppercase">Sample Generated Premise</span>
+                                <button onclick="copySnippet('concept-snippet', 'Concept snippet copied!')" class="hover:text-cyan-400 transition flex items-center gap-1">
+                                    <i class="ph-bold ph-copy"></i> Copy
+                                </button>
+                            </div>
+                            <p id="concept-snippet" class="text-[var(--text-main)] italic">"A celestial library adrift within an anti-gravity nebula, where memories are distilled into iridescent crystal prisms that rewrite historical timelines."</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="pt-5 border-t border-[var(--border-color)] flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="openPreviewModal('https://conceptpromptgen.app', 'Concept Prompt Gen', 'concept')" class="px-4 py-2.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-cyan-500/50 text-xs font-semibold text-[var(--text-main)] transition flex items-center gap-2">
+                            <i class="ph-bold ph-device-mobile-camera text-cyan-400 text-sm"></i> Live Embed Preview
+                        </button>
+                        <a href="https://conceptpromptgen.app" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs tracking-wide transition shadow-lg shadow-cyan-600/30 flex items-center gap-2 active:scale-95">
+                            Launch Site <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. characterpromptgen.app -->
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-fuchsia-500 transition-all duration-300 hover:shadow-glow-primary">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-500/30 flex items-center justify-center text-fuchsia-400 text-2xl">
+                                    <i class="ph-bold ph-user-focus"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-mono uppercase tracking-wider text-fuchsia-400 font-bold">Personas & Cast</span>
+                                    <h3 class="text-xl font-bold text-[var(--text-heading)]">Character Prompt Gen</h3>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/30">characterpromptgen.app</span>
+                        </div>
+
+                        <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-5">
+                            Constructs nuanced protagonists, antagonists, and entities: micro-expressions, layered cultural or high-tech garb, ocular details, physical scars, signature artifacts, and emotional states.
+                        </p>
+
+                        <!-- Highlights -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]"><i class="ph-fill ph-sparkle text-fuchsia-400 mr-1"></i>Facial Nuances</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]">Garb & Prosthetics</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]">Dynamic Emotion</span>
+                        </div>
+
+                        <!-- Sample Snippet Box -->
+                        <div class="bg-[var(--bg-input)] border border-[var(--border-color)] rounded-2xl p-4 mb-6 font-mono text-xs">
+                            <div class="flex items-center justify-between text-[11px] text-[var(--text-muted)] mb-2 font-sans font-semibold">
+                                <span class="uppercase">Sample Character Persona</span>
+                                <button onclick="copySnippet('character-snippet', 'Character snippet copied!')" class="hover:text-fuchsia-400 transition flex items-center gap-1">
+                                    <i class="ph-bold ph-copy"></i> Copy
+                                </button>
+                            </div>
+                            <p id="character-snippet" class="text-[var(--text-main)] italic">"A resolute star-navigator with biomechanical bronze ocular implants, wearing heavy embroidered indigo travel silks and carrying a humming celestial astrolabe."</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="pt-5 border-t border-[var(--border-color)] flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="openPreviewModal('https://characterpromptgen.app', 'Character Prompt Gen', 'character')" class="px-4 py-2.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-fuchsia-500/50 text-xs font-semibold text-[var(--text-main)] transition flex items-center gap-2">
+                            <i class="ph-bold ph-device-mobile-camera text-fuchsia-400 text-sm"></i> Live Embed Preview
+                        </button>
+                        <a href="https://characterpromptgen.app" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold text-xs tracking-wide transition shadow-lg shadow-fuchsia-600/30 flex items-center gap-2 active:scale-95">
+                            Launch Site <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. sceneryprompt.app -->
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-emerald-500 transition-all duration-300 hover:shadow-glow-primary">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl">
+                                    <i class="ph-bold ph-mountains"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">Worlds & Biomes</span>
+                                    <h3 class="text-xl font-bold text-[var(--text-heading)]">Scenery Prompt Gen</h3>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">sceneryprompt.app</span>
+                        </div>
+
+                        <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-5">
+                            Engineers breathtaking natural panoramas, extraterrestrial biomes, volumetric weather phenomenon, cinematic lighting angles, volumetric haze, and astronomical backdrops.
+                        </p>
+
+                        <!-- Highlights -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]"><i class="ph-fill ph-sparkle text-emerald-400 mr-1"></i>Volumetric Mist</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]">Atmospheric Scattering</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]">Alien Flora & Light</span>
+                        </div>
+
+                        <!-- Sample Snippet Box -->
+                        <div class="bg-[var(--bg-input)] border border-[var(--border-color)] rounded-2xl p-4 mb-6 font-mono text-xs">
+                            <div class="flex items-center justify-between text-[11px] text-[var(--text-muted)] mb-2 font-sans font-semibold">
+                                <span class="uppercase">Sample Landscape Prompt</span>
+                                <button onclick="copySnippet('scenery-snippet', 'Scenery snippet copied!')" class="hover:text-emerald-400 transition flex items-center gap-1">
+                                    <i class="ph-bold ph-copy"></i> Copy
+                                </button>
+                            </div>
+                            <p id="scenery-snippet" class="text-[var(--text-main)] italic">"A moonlit bioluminescent fjord shrouded in violet fog, illuminated by towering geothermal spires and aurora borealis ribbons."</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="pt-5 border-t border-[var(--border-color)] flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="openPreviewModal('https://sceneryprompt.app', 'Scenery Prompt Gen', 'scenery')" class="px-4 py-2.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-emerald-500/50 text-xs font-semibold text-[var(--text-main)] transition flex items-center gap-2">
+                            <i class="ph-bold ph-device-mobile-camera text-emerald-400 text-sm"></i> Live Embed Preview
+                        </button>
+                        <a href="https://sceneryprompt.app" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs tracking-wide transition shadow-lg shadow-emerald-600/30 flex items-center gap-2 active:scale-95">
+                            Launch Site <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. architectprompt.app -->
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-amber-500 transition-all duration-300 hover:shadow-glow-primary">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl">
+                                    <i class="ph-bold ph-buildings"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold">Spaces & Structures</span>
+                                    <h3 class="text-xl font-bold text-[var(--text-heading)]">Architect Prompt Gen</h3>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30">architectprompt.app</span>
+                        </div>
+
+                        <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-5">
+                            Specializes in structural geometry: brutalist monoliths, Zaha Hadid-style parametric curves, Gothic cathedral tracery, sci-fi habitat modules, and concrete-and-glass materiality.
+                        </p>
+
+                        <!-- Highlights -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]"><i class="ph-fill ph-sparkle text-amber-400 mr-1"></i>Parametric Geometry</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]">Brutalism & Glass</span>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)]">Volumetric Atriums</span>
+                        </div>
+
+                        <!-- Sample Snippet Box -->
+                        <div class="bg-[var(--bg-input)] border border-[var(--border-color)] rounded-2xl p-4 mb-6 font-mono text-xs">
+                            <div class="flex items-center justify-between text-[11px] text-[var(--text-muted)] mb-2 font-sans font-semibold">
+                                <span class="uppercase">Sample Architectural Construct</span>
+                                <button onclick="copySnippet('architect-snippet', 'Architect snippet copied!')" class="hover:text-amber-400 transition flex items-center gap-1">
+                                    <i class="ph-bold ph-copy"></i> Copy
+                                </button>
+                            </div>
+                            <p id="architect-snippet" class="text-[var(--text-main)] italic">"A cantilevered obsidian observatory suspended over a yawning canyon, featuring fluted concrete columns, bronze tracery, and skylit atrium wells."</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="pt-5 border-t border-[var(--border-color)] flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="openPreviewModal('https://architectprompt.app', 'Architect Prompt Gen', 'architect')" class="px-4 py-2.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-amber-500/50 text-xs font-semibold text-[var(--text-main)] transition flex items-center gap-2">
+                            <i class="ph-bold ph-device-mobile-camera text-amber-400 text-sm"></i> Live Embed Preview
+                        </button>
+                        <a href="https://architectprompt.app" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs tracking-wide transition shadow-lg shadow-amber-600/30 flex items-center gap-2 active:scale-95">
+                            Launch Site <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Cross-App Master Synergy Combinator Section -->
+        <section id="synergy-mixer" class="py-16 bg-[var(--bg-surface)] border-y border-[var(--border-color)] relative">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                    <div>
+                        <div class="inline-flex items-center gap-2 text-xs font-mono text-[var(--accent-primary)] font-semibold tracking-wider uppercase mb-1">
+                            <i class="ph-bold ph-atom"></i> Universal Combinator Engine
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--text-heading)]">Four-Quadrant Master Prompt Mixer</h2>
+                        <p class="text-[var(--text-muted)] text-sm max-w-xl mt-1">
+                            Assemble concepts, characters, horizons, and buildings into an integrated master prompt for Midjourney, Flux, SDXL, or chat models.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="rollRandomSynergy()" class="px-4 py-2 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[var(--border-hover)] text-[var(--text-main)] text-xs font-semibold transition flex items-center gap-2 shadow-sm">
+                            <i class="ph-bold ph-shuffle text-cyan-400"></i> Roll Random Preset
+                        </button>
+                        <button onclick="clearSynergy()" class="px-4 py-2 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[var(--border-hover)] text-[var(--text-muted)] text-xs font-semibold transition flex items-center gap-1.5">
+                            <i class="ph-bold ph-trash"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4 Input Layer Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="p-4 rounded-2xl bg-[var(--bg-input)] border border-[var(--border-color)] focus-within:border-cyan-500 transition">
+                        <label class="block text-xs font-mono font-semibold text-cyan-400 mb-2 flex items-center justify-between">
+                            <span>1. Concept Layer</span>
+                            <i class="ph-bold ph-lightbulb"></i>
+                        </label>
+                        <textarea id="mix-concept" rows="3" class="w-full bg-transparent text-xs text-[var(--text-main)] focus:outline-none resize-none font-sans" placeholder="Core premise, philosophy, or seed..."></textarea>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-[var(--bg-input)] border border-[var(--border-color)] focus-within:border-fuchsia-500 transition">
+                        <label class="block text-xs font-mono font-semibold text-fuchsia-400 mb-2 flex items-center justify-between">
+                            <span>2. Character Layer</span>
+                            <i class="ph-bold ph-user-focus"></i>
+                        </label>
+                        <textarea id="mix-character" rows="3" class="w-full bg-transparent text-xs text-[var(--text-main)] focus:outline-none resize-none font-sans" placeholder="Persona, attire, emotional state..."></textarea>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-[var(--bg-input)] border border-[var(--border-color)] focus-within:border-emerald-500 transition">
+                        <label class="block text-xs font-mono font-semibold text-emerald-400 mb-2 flex items-center justify-between">
+                            <span>3. Scenery Layer</span>
+                            <i class="ph-bold ph-mountains"></i>
+                        </label>
+                        <textarea id="mix-scenery" rows="3" class="w-full bg-transparent text-xs text-[var(--text-main)] focus:outline-none resize-none font-sans" placeholder="Biomes, atmospheric weather, light..."></textarea>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-[var(--bg-input)] border border-[var(--border-color)] focus-within:border-amber-500 transition">
+                        <label class="block text-xs font-mono font-semibold text-amber-400 mb-2 flex items-center justify-between">
+                            <span>4. Architecture Layer</span>
+                            <i class="ph-bold ph-buildings"></i>
+                        </label>
+                        <textarea id="mix-architect" rows="3" class="w-full bg-transparent text-xs text-[var(--text-main)] focus:outline-none resize-none font-sans" placeholder="Structural form, materials, vaults..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Modifiers Toolbar (Aspect Ratio, Engine tags) -->
+                <div class="glass-panel rounded-2xl p-4 mb-6 border border-[var(--border-color)] flex flex-wrap items-center justify-between gap-4 text-xs">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <span class="font-mono text-[var(--text-muted)] font-semibold uppercase tracking-wider">Parameters:</span>
+                        
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[var(--text-muted)]">Aspect Ratio:</span>
+                            <select id="param-ar" onchange="compileMasterPrompt()" class="bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)] rounded-lg px-2.5 py-1 text-xs focus:outline-none">
+                                <option value="--ar 16:9">16:9 (Cinematic)</option>
+                                <option value="--ar 21:9">21:9 (Ultrawide)</option>
+                                <option value="--ar 1:1">1:1 (Square)</option>
+                                <option value="--ar 9:16">9:16 (Portrait)</option>
+                                <option value="--ar 4:5">4:5 (Social)</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[var(--text-muted)]">Render Style:</span>
+                            <select id="param-style" onchange="compileMasterPrompt()" class="bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-main)] rounded-lg px-2.5 py-1 text-xs focus:outline-none">
+                                <option value="--v 6.1 --stylize 250">Midjourney v6.1 (Stylized)</option>
+                                <option value="cinematic lighting, 8k resolution, octane render">Photoreal Octane (SDXL)</option>
+                                <option value="flux hyper-detailed concept art">Flux Realism</option>
+                                <option value="">None (Raw)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <span class="text-[11px] font-mono text-[var(--text-muted)]">Live Auto-compilation active</span>
+                </div>
+
+                <!-- Master Output Box -->
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-[var(--border-color)] shadow-2xl relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span class="text-xs font-mono font-bold tracking-wider text-[var(--text-heading)] uppercase">Final Generated Synergy Prompt</span>
+                        </div>
+                        <button onclick="copyMasterPrompt()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95">
+                            <i class="ph-bold ph-copy text-sm"></i> Copy Master Prompt
+                        </button>
+                    </div>
+
+                    <div id="master-prompt-display" class="p-5 rounded-2xl bg-[var(--bg-input)] text-[var(--text-main)] font-mono text-xs sm:text-sm leading-relaxed border border-[var(--border-color)] select-all min-h-[90px]">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <div class="mt-3 flex flex-wrap items-center justify-between text-xs text-[var(--text-muted)] gap-2">
+                        <div>
+                            <span>Prompt Length: <strong id="prompt-stats" class="text-[var(--accent-primary)] font-mono">0 words</strong></span>
+                        </div>
+                        <span class="italic text-[11px]">Ready to paste into Midjourney, Stable Diffusion, Flux, or any LLM</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legal, Creator Responsibility & Developer Disclaimer -->
+        <section id="creator-responsibility" class="py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="rounded-3xl border border-[var(--border-color)] bg-[var(--bg-surface)] p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[var(--badge-bg)] text-[var(--accent-primary)] mb-4 border border-[var(--border-color)]">
+                        <i class="ph-bold ph-shield-check text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--text-heading)]">Creator Notice & Developer Disclaimer</h2>
+                    <p class="text-[var(--text-muted)] text-sm mt-2">
+                        Please review our usage terms, creator responsibilities, and product assurances below.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <!-- Free to Use & Creator Responsibility -->
+                    <div class="p-6 rounded-2xl bg-[var(--bg-input)] border border-[var(--border-color)] flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 text-[var(--accent-primary)] font-bold text-base mb-3">
+                                <i class="ph-fill ph-check-circle text-lg"></i>
+                                <h3>Free to Use & Sovereign Responsibility</h3>
+                            </div>
+                            <p class="text-[var(--text-main)] leading-relaxed text-xs sm:text-sm">
+                                All four platforms (<span class="font-mono text-xs text-[var(--text-heading)] font-semibold">conceptpromptgen.app</span>, <span class="font-mono text-xs text-[var(--text-heading)] font-semibold">characterpromptgen.app</span>, <span class="font-mono text-xs text-[var(--text-heading)] font-semibold">sceneryprompt.app</span>, and <span class="font-mono text-xs text-[var(--text-heading)] font-semibold">architectprompt.app</span>) are 100% free to use for creators worldwide.
+                            </p>
+                            <p class="text-[var(--text-muted)] mt-3 leading-relaxed text-xs">
+                                <strong>User Responsibility:</strong> Because creators hold complete freedom in selecting, altering, combining, and deploying prompts, <em>users are strictly responsible for what they produce</em>, publish, or generate across third-party neural networks and models.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Developer Disclaimer -->
+                    <div id="disclaimer" class="p-6 rounded-2xl bg-[var(--bg-input)] border border-[var(--border-color)] flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 text-amber-400 font-bold text-base mb-3">
+                                <i class="ph-fill ph-warning-diamond text-lg"></i>
+                                <h3>Developer Disclaimer</h3>
+                            </div>
+                            <blockquote class="p-3.5 rounded-xl bg-amber-500/10 border-l-4 border-amber-400 text-[var(--text-main)] text-xs leading-relaxed italic mb-3">
+                                "While every effort has been made to bring you the best available product, the developer cannot guarantee results."
+                            </blockquote>
+                            <p class="text-[var(--text-muted)] text-xs leading-relaxed">
+                                AI image models, checkpoints, and algorithmic weighting change dynamically. While our generators deliver mathematically curated syntax and descriptors, final rendered results will vary by platform.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friendly Welcome Message -->
+                <div class="mt-8 p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 border border-[var(--border-color)] text-center">
+                    <h3 class="text-[var(--text-heading)] font-extrabold text-base sm:text-lg mb-1 flex items-center justify-center gap-2">
+                        <i class="ph-fill ph-hands-clapping text-amber-400"></i> Welcome, Enjoy, and Have Fun!
+                    </h3>
+                    <p class="text-xs sm:text-sm text-[var(--text-muted)] max-w-xl mx-auto">
+                        We built this central suite to empower your artistic journey. Mix freely, create boldly, and uncover worlds waiting to be visualized.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Embed Preview Modal (With Desktop/Tablet/Mobile Resizer & Fallback) -->
+    <div id="previewModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md transition-opacity duration-300">
+        <div id="modalContainer" class="w-full max-w-5xl h-[90vh] flex flex-col rounded-3xl glass-panel bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] shadow-2xl overflow-hidden modal-enter">
+            <!-- Modal Header / Simulated Browser Bar -->
+            <div class="px-5 py-3.5 border-b border-[var(--border-color)] bg-[var(--bg-input)] flex flex-wrap items-center justify-between gap-3">
+                <!-- Left: Traffic Lights & Title -->
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-1.5">
+                        <span onclick="closePreviewModal()" class="w-3.5 h-3.5 rounded-full bg-rose-500 hover:opacity-80 cursor-pointer inline-block" title="Close"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-amber-400 inline-block"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 inline-block"></span>
+                    </div>
+                    <div class="flex items-center gap-2 pl-2 border-l border-[var(--border-color)]">
+                        <i id="modalIcon" class="ph-bold ph-globe text-base text-[var(--accent-primary)]"></i>
+                        <span id="modalSiteTitle" class="text-xs font-bold text-[var(--text-heading)] truncate max-w-[180px] sm:max-w-xs">App Preview</span>
+                    </div>
+                </div>
+
+                <!-- Center: Viewport Toggle (Desktop / Tablet / Mobile) -->
+                <div class="hidden sm:flex items-center gap-1 bg-[var(--bg-surface)] p-1 rounded-xl border border-[var(--border-color)]">
+                    <button onclick="setPreviewViewport('100%')" id="vp-desktop" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-[var(--bg-surface-elevated)] text-[var(--text-heading)] transition flex items-center gap-1">
+                        <i class="ph-bold ph-desktop"></i> Desktop
+                    </button>
+                    <button onclick="setPreviewViewport('768px')" id="vp-tablet" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-heading)] transition flex items-center gap-1">
+                        <i class="ph-bold ph-device-tablet"></i> Tablet
+                    </button>
+                    <button onclick="setPreviewViewport('390px')" id="vp-mobile" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-heading)] transition flex items-center gap-1">
+                        <i class="ph-bold ph-device-mobile"></i> Mobile
+                    </button>
+                </div>
+
+                <!-- Right: Simulated URL & Open Tab Button -->
+                <div class="flex items-center gap-2">
+                    <button onclick="reloadIframe()" title="Reload Iframe" class="p-2 rounded-xl hover:bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-heading)] transition">
+                        <i class="ph-bold ph-arrow-clockwise text-sm"></i>
+                    </button>
+                    <a id="modalExternalLink" href="#" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-[var(--accent-primary)] hover:opacity-90 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-md">
+                        <span>Open in New Tab</span>
+                        <i class="ph-bold ph-arrow-square-out text-sm"></i>
+                    </a>
+                    <button onclick="closePreviewModal()" class="p-2 rounded-xl hover:bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-heading)] transition ml-1" aria-label="Close Preview Modal">
+                        <i class="ph-bold ph-x text-base"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Iframe Container with Responsive Viewport Wrapper -->
+            <div class="flex-grow bg-[#05070a] flex items-center justify-center overflow-hidden relative">
+                <!-- Informative Notice Banner (helpful if security headers/X-Frame-Options restrict embedding) -->
+                <div id="iframeNotice" class="absolute top-3 left-4 right-4 z-20 pointer-events-none flex justify-center">
+                    <div class="px-4 py-2 rounded-xl bg-slate-900/95 border border-slate-700/80 text-[11px] text-slate-300 shadow-xl flex items-center gap-2 pointer-events-auto backdrop-blur-md">
+                        <i class="ph-bold ph-info text-cyan-400"></i>
+                        <span>Live browser preview. If a site restricts in-frame loading, click <strong class="text-white">"Open in New Tab"</strong> above.</span>
+                        <button onclick="document.getElementById('iframeNotice').style.display='none'" class="text-slate-400 hover:text-white ml-2">×</button>
+                    </div>
+                </div>
+
+                <!-- Viewport Frame -->
+                <div id="viewportContainer" class="h-full w-full transition-all duration-300 flex justify-center bg-slate-950">
+                    <iframe id="previewIframe" src="" class="w-full h-full border-0 bg-white" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[var(--bg-base)] border-t border-[var(--border-color)] text-xs text-[var(--text-muted)] py-10 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-violet-500 flex items-center justify-center text-white">
+                        <i class="ph-bold ph-sparkle"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-[var(--text-heading)]">PromptForge Quad-Suite Portal</p>
+                        <p class="text-[11px] text-[var(--text-muted)]">Crafted for digital artists, game writers, & AI enthusiasts.</p>
+                    </div>
+                </div>
+
+                <!-- Direct Links in Footer -->
+                <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-mono text-[11px]">
+                    <a href="https://conceptpromptgen.app" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition">conceptpromptgen.app</a>
+                    <a href="https://characterpromptgen.app" target="_blank" rel="noopener noreferrer" class="hover:text-fuchsia-400 transition">characterpromptgen.app</a>
+                    <a href="https://sceneryprompt.app" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition">sceneryprompt.app</a>
+                    <a href="https://architectprompt.app" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition">architectprompt.app</a>
+                </div>
+
+                <div>
+                    <a href="#" class="px-3.5 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] hover:border-[var(--border-hover)] text-[var(--text-main)] transition">
+                        Back to top ↑
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-[var(--border-color)] text-center text-[11px] text-[var(--text-muted)]">
+                Free open creative initiative. Users retain sovereign responsibility for all produced generations.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts: Themes, Modal, Synergy Mixer -->
+    <script>
+        // Preset Synergy Sets
+        const SYNERGY_PRESETS = [
+            {
+                concept: "An ethereal solarpunk chronomancy archive suspended within a celestial magnetic storm",
+                character: "A venerable star-weaver with iridescent fiber-optic braided hair, brass mechanical spectacles, and indigo travel robes",
+                scenery: "Dense bioluminescent mountain peaks drenched in purple twilight haze, with orbital ring stations visible in the sky",
+                architect: "A sweeping parametric glass atrium supported by spiraling basalt pillars and suspended bronze skywalks"
+            },
+            {
+                concept: "A subterranean cyberpunk black market where discarded AI memories are traded as bottled nebulae",
+                character: "A taciturn memory courier with cybernetic chrome fingers, an oversized holographic trenchcoat, and weary emerald eyes",
+                scenery: "Rain-slicked alleyways illuminated by flickering neon signs, deep atmospheric fog, and reflective puddles",
+                architect: "A towering brutalist concrete megastructure crisscrossed by industrial ventilation conduits and hanging cable clusters"
+            },
+            {
+                concept: "An ancient forgotten ocean sanctuary guarding celestial seafaring secrets",
+                character: "A nomadic deep-sea cartographer wearing diving plate armor adorned with glowing deep-sea runic insignias",
+                scenery: "Sunken coral reef canyons illuminated by glowing jellyfish blooms and geothermal sea vents",
+                architect: "Submerged nautilus-spiral cathedral with vaulted mother-of-pearl arches and crystal dome portals"
+            }
+        ];
+
+        // Theme Switcher Logic
+        function toggleThemeMenu() {
+            const menu = document.getElementById('themeMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close theme menu if clicking outside
+        window.addEventListener('click', function(e) {
+            const container = document.getElementById('theme-selector-container');
+            if (container && !container.contains(e.target)) {
+                document.getElementById('themeMenu').classList.add('hidden');
+            }
+        });
+
+        function setTheme(themeName, labelText) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            document.getElementById('currentThemeLabel').innerText = labelText;
+            document.getElementById('themeMenu').classList.add('hidden');
+            showToast(`Theme switched to ${labelText}!`);
+            try {
+                localStorage.setItem('promptforge_theme', themeName);
+                localStorage.setItem('promptforge_theme_label', labelText);
+            } catch(e) {}
+        }
+
+        // Restore saved theme
+        (function initTheme() {
+            try {
+                const savedTheme = localStorage.getItem('promptforge_theme');
+                const savedLabel = localStorage.getItem('promptforge_theme_label');
+                if (savedTheme && savedLabel) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                    document.getElementById('currentThemeLabel').innerText = savedLabel;
+                }
+            } catch(e) {}
+        })();
+
+        // Synergy Mixer Element Refs
+        const conceptEl = document.getElementById('mix-concept');
+        const characterEl = document.getElementById('mix-character');
+        const sceneryEl = document.getElementById('mix-scenery');
+        const architectEl = document.getElementById('mix-architect');
+        const paramArEl = document.getElementById('param-ar');
+        const paramStyleEl = document.getElementById('param-style');
+        const masterDisplay = document.getElementById('master-prompt-display');
+        const promptStats = document.getElementById('prompt-stats');
+
+        function compileMasterPrompt() {
+            const parts = [];
+            const c = conceptEl.value.trim();
+            const ch = characterEl.value.trim();
+            const sc = sceneryEl.value.trim();
+            const ar = architectEl.value.trim();
+
+            if (c) parts.push(`[Concept: ${c}]`);
+            if (ch) parts.push(`[Subject: ${ch}]`);
+            if (sc) parts.push(`[Environment: ${sc}]`);
+            if (ar) parts.push(`[Architecture: ${ar}]`);
+
+            const arVal = paramArEl.value;
+            const styleVal = paramStyleEl.value;
+
+            if (parts.length === 0) {
+                masterDisplay.innerHTML = `<span class="text-[var(--text-muted)] italic">Fill in one or more layers above, or click "Roll Random Preset" to preview the synthesized master prompt...</span>`;
+                promptStats.innerText = "0 words";
+                return;
+            }
+
+            let fullPrompt = parts.join(", ");
+            if (styleVal) fullPrompt += `, ${styleVal}`;
+            if (arVal) fullPrompt += ` ${arVal}`;
+
+            masterDisplay.innerText = fullPrompt;
+            const wordCount = fullPrompt.split(/\s+/).filter(Boolean).length;
+            promptStats.innerText = `${wordCount} words`;
+        }
+
+        [conceptEl, characterEl, sceneryEl, architectEl].forEach(input => {
+            input.addEventListener('input', compileMasterPrompt);
+        });
+
+        function rollRandomSynergy() {
+            const randomPreset = SYNERGY_PRESETS[Math.floor(Math.random() * SYNERGY_PRESETS.length)];
+            conceptEl.value = randomPreset.concept;
+            characterEl.value = randomPreset.character;
+            sceneryEl.value = randomPreset.scenery;
+            architectEl.value = randomPreset.architect;
+            compileMasterPrompt();
+            showToast("Loaded a fresh synergy combination!");
+        }
+
+        function clearSynergy() {
+            conceptEl.value = "";
+            characterEl.value = "";
+            sceneryEl.value = "";
+            architectEl.value = "";
+            compileMasterPrompt();
+            showToast("Cleared synergy fields.", true);
+        }
+
+        // Copy Helper
+        function copySnippet(elementId, successMsg) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const raw = el.innerText.replace(/^"|"$/g, '');
+            copyTextToClipboard(raw, successMsg);
+        }
+
+        function copyMasterPrompt() {
+            const text = masterDisplay.innerText;
+            if (!text || text.includes("Fill in one or more layers")) {
+                showToast("Please enter or generate a prompt first!", true);
+                return;
+            }
+            copyTextToClipboard(text, "Master synergy prompt copied to clipboard!");
+        }
+
+        function copyTextToClipboard(text, msg) {
+            const temp = document.createElement("textarea");
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                showToast(msg || "Copied to clipboard!");
+            } catch (err) {
+                showToast("Failed to copy", true);
+            }
+            document.body.removeChild(temp);
+        }
+
+        // Embed Preview Modal Functionality
+        const previewModal = document.getElementById('previewModal');
+        const modalContainer = document.getElementById('modalContainer');
+        const previewIframe = document.getElementById('previewIframe');
+        const modalSiteTitle = document.getElementById('modalSiteTitle');
+        const modalExternalLink = document.getElementById('modalExternalLink');
+        const modalIcon = document.getElementById('modalIcon');
+        const viewportContainer = document.getElementById('viewportContainer');
+
+        const iconsMap = {
+            concept: 'ph-lightbulb',
+            character: 'ph-user-focus',
+            scenery: 'ph-mountains',
+            architect: 'ph-buildings'
+        };
+
+        function openPreviewModal(url, title, type) {
+            modalSiteTitle.innerText = title;
+            modalExternalLink.href = url;
+            previewIframe.src = url;
+
+            if (iconsMap[type]) {
+                modalIcon.className = `ph-bold ${iconsMap[type]} text-base text-[var(--accent-primary)]`;
+            }
+
+            // Reset viewport to desktop default
+            setPreviewViewport('100%');
+
+            previewModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContainer.classList.remove('modal-enter');
+                modalContainer.classList.add('modal-enter-active');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePreviewModal() {
+            modalContainer.classList.remove('modal-enter-active');
+            modalContainer.classList.add('modal-enter');
+            setTimeout(() => {
+                previewModal.classList.add('hidden');
+                previewIframe.src = "";
+                document.body.style.overflow = '';
+            }, 200);
+        }
+
+        // Close on clicking backdrop
+        previewModal.addEventListener('click', function(e) {
+            if (e.target === previewModal) {
+                closePreviewModal();
+            }
+        });
+
+        // Close on Escape key
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !previewModal.classList.contains('hidden')) {
+                closePreviewModal();
+            }
+        });
+
+        function reloadIframe() {
+            const current = previewIframe.src;
+            previewIframe.src = current;
+            showToast("Reloading embedded site...");
+        }
+
+        function setPreviewViewport(width) {
+            viewportContainer.style.maxWidth = width;
+            
+            // Toggle active styling on buttons
+            const btnDesktop = document.getElementById('vp-desktop');
+            const btnTablet = document.getElementById('vp-tablet');
+            const btnMobile = document.getElementById('vp-mobile');
+
+            [btnDesktop, btnTablet, btnMobile].forEach(btn => {
+                btn.className = "px-2.5 py-1 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-heading)] transition flex items-center gap-1";
+            });
+
+            if (width === '100%') {
+                btnDesktop.className = "px-2.5 py-1 rounded-lg text-xs font-semibold bg-[var(--bg-surface-elevated)] text-[var(--text-heading)] transition flex items-center gap-1 shadow-sm";
+            } else if (width === '768px') {
+                btnTablet.className = "px-2.5 py-1 rounded-lg text-xs font-semibold bg-[var(--bg-surface-elevated)] text-[var(--text-heading)] transition flex items-center gap-1 shadow-sm";
+            } else if (width === '390px') {
+                btnMobile.className = "px-2.5 py-1 rounded-lg text-xs font-semibold bg-[var(--bg-surface-elevated)] text-[var(--text-heading)] transition flex items-center gap-1 shadow-sm";
+            }
+        }
+
+        // Toast Helper
+        let toastTimer;
+        function showToast(msg, isWarn = false) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            clearTimeout(toastTimer);
+            toastMsg.innerText = msg;
+
+            if (isWarn) {
+                toastIcon.className = "ph-bold ph-warning-circle text-amber-400 text-xl";
+            } else {
+                toastIcon.className = "ph-bold ph-check-circle text-emerald-400 text-xl";
+            }
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initial setup
+        window.addEventListener('DOMContentLoaded', () => {
+            rollRandomSynergy();
+        });
+    </script>
+</body>
+</html>
